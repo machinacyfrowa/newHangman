@@ -14,15 +14,34 @@ function guess() {
     let found = password.includes(char);
     //jeśli znalazłeś
     if(found)
+    {
         //wypisz od konsoli
         console.log("Trafiony!");
+    }
     else
+    {
         //jeśli nie znalazłeś też napisz 
         console.log("Pudło!");
+        //zwiększ licznik błędów o 1
+        errorCount++;
+        //podmień obraz na kolejny
+        //początek ścieżki jest zawsze taki sam: "img/"
+        //potem wpisujemy numer obrazka
+        //i kończymy ".png"
+        document.getElementById("hangman").src = 
+                    "img/" + errorCount + ".png";
+        //jeśli ilość błędów jest równa lub większa od 7
+        if(errorCount >= 6) {
+            window.alert("Przegrałeś!")
+        }
+    }
+        
 }
 
 //definiujemy hasło do odgadnięcia
 let password = "DUPA";
+//definiujemy sobie licznik nietrafionych prób
+let errorCount = 0;
 //podpinamy funkcję do zdarzenia
 //jeśli zmodyfikujemy zawartość pola input o id "guessedChar"
 //to uruchomi się funkcja o nazwie guess
