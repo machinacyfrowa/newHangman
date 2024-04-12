@@ -8,6 +8,8 @@ function guess() {
     console.log("Wcisnąłeś klawisz " + char);
     //resetuje pole input do stanu poczatkowego
     document.getElementById("guessedChar").value = "";
+    //dopisz do listy już sprawdzonych obecną literę
+    tested += char
     //deklarujemy zmienną found, która zawiera informację
     //czy znak istniej w haśle
     //zmienna będzie miała wartość true lub false (bool)
@@ -17,6 +19,7 @@ function guess() {
     {
         //wypisz od konsoli
         console.log("Trafiony!");
+        showPassword();
     }
     else
     {
@@ -35,13 +38,33 @@ function guess() {
             window.alert("Przegrałeś!")
         }
     }
-        
+}
+function showPassword() {
+    //funkcja wypisuje na ekranie hasło z zachowaniem ukrycia
+    //znaków, które nie zostały odgadnięte
+    //przygotuj zmienną na częściowo lub w całości ukryte hasło
+    let hiddenPassword = "";
+    //używając pętli foreach przejdz przez całe jawne hasło
+    password.split().forEach(char => {
+        //jeżeli litera hasła (char) znajduje się na liście już sprawdzanych
+        if(tested.includes(char))
+            hiddenPassword += char;
+        //jeżeli nie
+        else
+            hiddenPassword += '_'
+    });
+    //wyświetl na stronie
+    document.getElementById('password').innerHTML = hiddenPassword;
 }
 
 //definiujemy hasło do odgadnięcia
 let password = "DUPA";
+//definiujemy zmienną do przechowywania wszystkich próbowanych liter
+let tested= "";
 //definiujemy sobie licznik nietrafionych prób
 let errorCount = 0;
+//pokaż hasło (zakryte) na ekranie
+showPassword();
 //podpinamy funkcję do zdarzenia
 //jeśli zmodyfikujemy zawartość pola input o id "guessedChar"
 //to uruchomi się funkcja o nazwie guess
