@@ -1,13 +1,8 @@
-function guess() {
-    //deklarujemy zmienną char i zapisujemy do niej zawartość
-    //pola input (w założeniu literę)
-    let char = document.getElementById("guessedChar").value;
+function guess(char) {
     //zmieniamy wielkość znaku/ów na wielkie litery
     char = char.toUpperCase();
     //piszemy do konsoli jaki klawisz został wciśnięty
     console.log("Wcisnąłeś klawisz " + char);
-    //resetuje pole input do stanu poczatkowego
-    document.getElementById("guessedChar").value = "";
     //dopisz do listy już sprawdzonych obecną literę
     tested += char
     //deklarujemy zmienną found, która zawiera informację
@@ -45,7 +40,7 @@ function showPassword() {
     //przygotuj zmienną na częściowo lub w całości ukryte hasło
     let hiddenPassword = "";
     //używając pętli foreach przejdz przez całe jawne hasło
-    password.split().forEach(char => {
+    password.split('').forEach(char => {
         //jeżeli litera hasła (char) znajduje się na liście już sprawdzanych
         if(tested.includes(char))
             hiddenPassword += char;
@@ -55,6 +50,40 @@ function showPassword() {
     });
     //wyświetl na stronie
     document.getElementById('password').innerHTML = hiddenPassword;
+    if(!hiddenPassword.includes("_")){
+        setTimeout(() => {
+            alert("Gratki - wygrałeś!");
+            location.reload();
+        }, 1000)
+        
+    }
+}
+
+function createButton(char) {
+    //funkcja tworząca w dokumencie guzik z podanym symbolem (char)
+
+    //utwórz guzik w pamięci
+    const button = document.createElement('button');
+    //zmień jego etykietkę na podany znak
+    button.innerText = char;
+    //dopnij do niego funkcję buttonPressed
+    button.addEventListener("click", buttonPressed);
+    //umieść go w dokumencie
+    document.getElementById("keyboard").appendChild(button);
+}
+function buttonPressed(event) {
+    let char = event.srcElement.innerText;
+    guess(char);
+}
+
+function displayKeyboard() {
+    //zdefiniuj wszystkie możliwe litery na klawiaturze
+    let chars = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUVWXYZŻŹ";
+    //podziel je na jednoelementową tablicę (split()) i dla każdego
+    //elementu wywołaj funkcję createButton
+    chars.split('').forEach(char => {
+        createButton(char);
+    });
 }
 
 //definiujemy hasło do odgadnięcia
@@ -65,7 +94,7 @@ let tested= "";
 let errorCount = 0;
 //pokaż hasło (zakryte) na ekranie
 showPassword();
-//podpinamy funkcję do zdarzenia
-//jeśli zmodyfikujemy zawartość pola input o id "guessedChar"
-//to uruchomi się funkcja o nazwie guess
-document.getElementById("guessedChar").addEventListener("input", guess)
+
+
+//pokaż klawiaturę
+displayKeyboard();
